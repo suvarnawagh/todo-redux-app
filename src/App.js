@@ -4,52 +4,51 @@ import { addTodo, toggleTodo } from './redux/todoSlice';
 import './App.css';
 
 function App() {
-  const [text, setText] = useState('');
+  const [inputText, setInputText] = useState('');
   const todos = useSelector((state) => state.todos);
   const dispatch = useDispatch();
 
   const handleAddTodo = () => {
-    if (text.trim() !== '') {
-      dispatch(addTodo(text));
-      setText('');
+    if (inputText.trim() !== '') {
+      dispatch(addTodo(inputText));
+      setInputText('');
     }
   };
 
   return (
-    <div className="App" style={{ padding: '20px', maxWidth: '500px', margin: 'auto' }}>
+    <> 
       <h1>Redux Todo App</h1>
       
       <input
+        data-testid="todo-input"
         type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Enter todo description"
-        style={{ padding: '8px', width: '70%', marginRight: '10px' }}
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)}
+        placeholder="Add a new todo"
       />
       
-      <button onClick={handleAddTodo} style={{ padding: '8px 15px' }}>
-        Add Todo
+      <button 
+        data-testid="add-button"
+        onClick={handleAddTodo}
+      >
+        Add
       </button>
 
-      <ul style={{ listStyle: 'none', padding: 0, marginTop: '20px' }}>
+      <ul>
         {todos.map((todo) => (
           <li
             key={todo.id}
             onClick={() => dispatch(toggleTodo(todo.id))}
-            style={{
+            style={{ 
               textDecoration: todo.completed ? 'line-through' : 'none',
-              cursor: 'pointer',
-              padding: '10px',
-              border: '1px solid #ccc',
-              marginBottom: '5px',
-              backgroundColor: todo.completed ? '#e0e0e0' : 'white'
+              cursor: 'pointer' 
             }}
           >
             {todo.text}
           </li>
         ))}
       </ul>
-    </div>
+    </>
   );
 }
 
